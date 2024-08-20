@@ -1,0 +1,678 @@
+Easy 1 question
+Explain what Spring Boot is and its main features
+
+Ans:- Spring Boot is a framework designed to simplify the creation of stand-alone, production-grade Spring-based applications with minimal configuration.
+ It is built on top of the Spring Framework and provides a set of features and tools to help developers build and deploy applications quickly and efficiently.
+
+Auto-Configuration:
+Spring Boot can automatically configure your application based on the dependencies you have added. It reduces the need for manual configuration and setup, allowing you to focus on writing code.
+
+Starter POMs:
+Spring Boot provides a collection of starter dependencies (called "Starters") that simplify the process of including dependencies in your project. For example, spring-boot-starter-web includes everything needed to build a web application, including Tomcat and Spring MVC.
+
+Embedded Servers:
+Spring Boot comes with embedded servers like Tomcat, Jetty, or Undertow, allowing you to run web applications without needing to deploy them to an external server. This makes it easy to create and run applications directly from your IDE or command line.
+
+Production-Ready Features:
+Spring Boot includes several features to help you build production-ready applications, such as health checks, metrics, externalized configuration, and monitoring. These features make it easier to manage and monitor your application in production.
+
+Actuator:
+Spring Boot Actuator provides a set of tools for monitoring and managing your application. It includes endpoints for health checks, metrics, and other management-related tasks, which can be exposed via HTTP or JMX.
+
+Easy 2 Question
+Compare configuration styles between Spring and Spring Boot
+
+Ans:-  
+XML Configuration (Spring) vs. Auto-Configuration (Spring Boot)
+
+Spring (XML Configuration):
+
+Traditional Spring applications often relied heavily on XML configuration files (applicationContext.xml) to define beans, wire dependencies, set up middleware, and configure the application context.
+Developers had to manually configure almost everything, including view resolvers, data sources, transaction management, and security.
+
+Spring Boot (Auto-Configuration):
+
+Spring Boot leverages auto-configuration to automatically configure the application based on the dependencies in the classpath. For example, if spring-boot-starter-web is included, Spring Boot automatically sets up a web application with a dispatcher servlet, embedded server, etc.
+The goal is to minimize the need for manual configuration by providing sensible defaults and automatically wiring components where possible.
+
+2. Java Configuration (Spring) vs. Starter Dependencies (Spring Boot)
+
+Spring (Java Configuration):
+
+Starting with Spring 3.0, Java-based configuration (@Configuration and @Bean annotations) became popular as an alternative to XML. This allows developers to define beans and configure the application in a type-safe and refactor-friendly manner.
+Java-based configuration provides a more modern and concise way to configure Spring applications, but it still requires manual setup of various components.
+
+Spring Boot (Starter Dependencies):
+
+Spring Boot simplifies dependency management by providing starter POMs, such as spring-boot-starter-data-jpa, spring-boot-starter-web, etc. These starters include common dependencies and configurations out of the box, drastically reducing the amount of boilerplate code.
+Developers can focus on the application logic rather than worrying about setting up the right libraries and configurations.
+
+3. Properties Files (Spring) vs. Externalized Configuration (Spring Boot)
+
+Spring (Properties Files):
+
+In traditional Spring, configuration properties are typically defined in .properties or .xml files and injected into beans using @Value annotations or property placeholder configurations.
+Managing environment-specific configurations could become cumbersome, requiring different property files for different environments (e.g., application-dev.properties, application-prod.properties).
+
+Spring Boot (Externalized Configuration):
+
+Spring Boot allows for a more flexible and centralized approach to configuration using application.properties or application.yml files. These files can be environment-specific (e.g., application-dev.yml), and Spring Boot automatically loads the appropriate configuration based on the active profile.
+Configuration can also be externalized to environment variables, command-line arguments, or even remote configuration servers when using Spring Cloud.
+
+Medium 1 question
+ Create a basic web application setup comparison between Spring and Spring Boot
+
+Ans:-
+ Project Structure
+Spring (Traditional Setup)
+A typical Spring project might look like this:
+
+- src/
+  - main/
+    - java/
+      - com/
+        - example/
+          - controller/
+            - HomeController.java
+          - config/
+            - WebConfig.java
+    - resources/
+      - applicationContext.xml
+      - web.xml
+    - webapp/
+      - WEB-INF/
+        - views/
+          - home.jsp
+
+Spring Boot
+A Spring Boot project structure is simpler:
+
+- src/
+  - main/
+    - java/
+      - com/
+        - example/
+          - controller/
+            - HomeController.java
+    - resources/
+      - application.properties
+
+
+Let's compare the steps required to set up a basic web application in Spring and Spring Boot. This comparison will highlight the differences in configuration and setup between the two.
+
+1. Project Structure
+Spring (Traditional Setup)
+A typical Spring project might look like this:
+
+markdown
+Copy code
+- src/
+  - main/
+    - java/
+      - com/
+        - example/
+          - controller/
+            - HomeController.java
+          - config/
+            - WebConfig.java
+    - resources/
+      - applicationContext.xml
+      - web.xml
+    - webapp/
+      - WEB-INF/
+        - views/
+          - home.jsp
+Spring Boot
+A Spring Boot project structure is simpler:
+
+markdown
+Copy code
+- src/
+  - main/
+    - java/
+      - com/
+        - example/
+          - controller/
+            - HomeController.java
+    - resources/
+      - application.properties
+
+2. Dependency Management
+Spring (Traditional Setup)
+In a traditional Spring application, you need to manually manage dependencies in pom.xml or build.gradle. For a web application, this might include:
+
+spring-webmvc
+spring-core
+spring-context
+servlet-api
+jsp-api
+A servlet container like Tomcat (if using embedded servers)
+
+Spring Boot
+In Spring Boot, dependency management is simplified with starter dependencies:
+spring-boot-starter-web (includes everything needed for a web application, like Spring MVC, embedded Tomcat, etc.)
+
+3. Configuration
+Spring (Traditional Setup)
+web.xml: Defines the DispatcherServlet and context configuration.
+applicationContext.xml: Configures beans, view resolvers, etc.
+
+<web-app>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/applicationContext.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
+
+<beans>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+</beans>
+
+
+Spring Boot
+Spring Boot eliminates the need for web.xml and applicationContext.xml. Instead, it uses annotations and auto-configuration.
+No web.xml: The @SpringBootApplication annotation triggers auto-configuration.
+No applicationContext.xml: Use application.properties for basic configuration, and Java-based configuration for advanced settings.
+
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+4. Controller
+The controller code is identical in both setups.
+
+Spring and Spring Boot
+Example HomeController.java:
+
+package com.example.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+@RequestMapping("/")
+public class HomeController {
+    
+    @GetMapping
+    public ModelAndView home() {
+        return new ModelAndView("home");
+    }
+}
+
+
+Medium 2 question:-
+Demonstrate differences in auto-configuration between Spring and Spring Boot
+
+Ans;-
+1. Database Configuration
+Spring (Traditional Setup)
+In a traditional Spring application, you need to manually configure the data source, transaction manager, and other database-related beans. This often requires multiple steps and custom configuration.
+
+DataSource Configuration:
+Manually define a DataSource bean.
+Set up a JdbcTemplate or EntityManagerFactory for database interactions.
+Configure transaction management.
+
+@Configuration
+public class DataSourceConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/mydb");
+        dataSource.setUsername("user");
+        dataSource.setPassword("password");
+        return dataSource;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
+}
+
+
+Spring Boot
+Spring Boot auto-configures the database and transaction management based on the presence of specific dependencies in the classpath and properties in application.properties or application.yml.
+
+DataSource Auto-Configuration:
+If you include a dependency like spring-boot-starter-data-jpa, Spring Boot automatically configures a DataSource bean.
+It also sets up an EntityManagerFactory, JdbcTemplate, and transaction manager without any explicit configuration.
+
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=user
+spring.datasource.password=password
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+
+2. Web Application Configuration
+Spring (Traditional Setup)
+In a traditional Spring application, setting up a web application involves multiple configuration files, including web.xml and applicationContext.xml, and manual bean definitions for the dispatcher servlet, view resolvers, etc.
+
+DispatcherServlet Configuration:
+Manually configure the DispatcherServlet in web.xml or through Java-based configuration.
+
+<web-app>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/applicationContext.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
+
+
+Spring Boot
+Spring Boot simplifies web application configuration by auto-configuring the dispatcher servlet, view resolvers, and other web-related components based on the presence of the spring-boot-starter-web dependency.
+
+DispatcherServlet Auto-Configuration:
+
+Spring Boot automatically configures the DispatcherServlet and maps it to the root (/) URL pattern.
+No need for web.xml or manual servlet registration.
+View Resolver Auto-Configuration:
+
+Spring Boot auto-configures view resolvers like InternalResourceViewResolver based on the properties in application.properties.
+
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+
+Security Configuration
+Spring (Traditional Setup)
+In traditional Spring applications, you need to manually configure security settings, including authentication providers, security filters, and access rules.
+
+Security Configuration:
+Manually define security beans in Java configuration or applicationContext.xml.
+
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/", "/home").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+            .logout()
+                .permitAll();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .inMemoryAuthentication()
+            .withUser("user").password("{noop}password").roles("USER");
+    }
+}
+
+
+Spring Boot
+Spring Boot automatically configures basic security settings based on the presence of the spring-boot-starter-security dependency. It sets up default login forms, basic authentication, and CSRF protection without requiring manual configuration.
+
+Security Auto-Configuration:
+By default, Spring Boot secures all endpoints and provides a basic login page.
+You can customize the security settings via properties or by extending WebSecurityConfigurerAdapter.
+
+spring.security.user.name=admin
+spring.security.user.password=secret
+
+
+Medium 3 question:-
+ Compare Spring and Spring Boot in a real-world scenario
+
+Ans:-
+
+1. Initial Setup and Project Configuration
+Spring (Traditional Setup)
+Setup Complexity: Setting up a traditional Spring application requires a significant amount of manual configuration. You'll need to define dependencies in pom.xml or build.gradle, create XML or Java configuration files, and manually configure components like data sources, view resolvers, and security.
+Time to Start: The initial setup is time-consuming, as you need to configure many aspects of the application yourself. You'll also need to choose and integrate an external servlet container (e.g., Tomcat) if you want to run the application.
+Example:
+
+Manually configure the DispatcherServlet in web.xml or using Java-based configuration.
+Set up the project structure with separate folders for controller classes, service classes, repository classes, and XML configuration files.
+Spring Boot
+Setup Complexity: Spring Boot significantly reduces the setup complexity. You can create a new project using Spring Initializr, which automatically includes necessary dependencies and configurations. Spring Boot's auto-configuration feature takes care of most of the setup, allowing you to start coding the business logic immediately.
+Time to Start: The initial setup is much faster. Spring Boot projects come with embedded servers (Tomcat, Jetty, etc.), so you don't need to worry about external servers.
+Example:
+
+Use Spring Initializr to generate a basic project structure with the necessary dependencies like spring-boot-starter-web, spring-boot-starter-data-jpa, etc.
+Start the project with minimal configuration by simply annotating the main class with @SpringBootApplication.
+2. Database Integration
+Spring (Traditional Setup)
+Configuration: You need to manually configure the DataSource, EntityManagerFactory, and transaction management. This involves defining beans in XML or Java configuration classes. For example, integrating a MySQL database requires specifying the JDBC driver, database URL, username, and password in the configuration files.
+Setup Time: Setting up the database integration takes time, as you need to write and maintain the configuration manually. You also have to handle different environments (e.g., development, production) with separate configuration files.
+Example:
+
+Create a DataSource bean, a JpaTransactionManager, and configure them in the XML configuration or a @Configuration class.
+Spring Boot
+Configuration: Spring Boot auto-configures the DataSource, JPA, and transaction management based on the dependencies and settings in application.properties or application.yml. It automatically detects the database type and configures the connection pool, Hibernate, and transaction management.
+Setup Time: The setup time is minimal. You just need to provide the database connection details in the application.properties file, and Spring Boot handles the rest.
+Example:
+
+Add database connection details like spring.datasource.url, spring.datasource.username, and spring.datasource.password in application.properties.
+3. Security Configuration
+Spring (Traditional Setup)
+Configuration: In a traditional Spring application, security configuration involves setting up authentication providers, security filters, and access control rules manually. This is typically done in a dedicated security configuration file, either in XML or using Java-based configuration.
+Flexibility: You have full control over security configuration, which is beneficial for complex or custom security requirements, but it also requires more time and effort to implement and maintain.
+Example:
+
+Configure an AuthenticationManager and HttpSecurity in a @Configuration class annotated with @EnableWebSecurity.
+Spring Boot
+Configuration: Spring Boot auto-configures basic security settings, including login forms, authentication, and CSRF protection, if the spring-boot-starter-security dependency is included. For more advanced security settings, you can override the auto-configuration by extending WebSecurityConfigurerAdapter.
+Flexibility: While Spring Boot provides sensible defaults, you can easily customize security settings with minimal configuration. It strikes a balance between simplicity and flexibility.
+Example:
+
+Spring Boot automatically secures all endpoints by default. You can customize the security by overriding the configure method in a @Configuration class.
+
+Hard 1 question
+Replicate functionality of Spring using Spring Boot and explain simplifications
+
+Ans:-
+
+1. Project Setup
+Traditional Spring
+Dependencies:
+
+You need to manually define all the dependencies in your pom.xml or build.gradle file, including Spring Core, Spring MVC, Spring Data JPA, and others.
+Example pom.xml:
+
+<dependencies>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>5.3.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>5.3.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-data-jpa</artifactId>
+        <version>2.4.0</version>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.21</version>
+    </dependency>
+    <!-- Other dependencies as needed -->
+</dependencies>
+
+Servlet Configuration:
+
+Manually configure the DispatcherServlet in web.xml.
+Example web.xml:
+
+<web-app>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/applicationContext.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
+
+Spring Configuration:
+
+You need to define beans for all major components, such as data sources, transaction managers, view resolvers, and more, either in applicationContext.xml or using Java-based configuration.
+Example applicationContext.xml:
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/mydb" />
+        <property name="username" value="user" />
+        <property name="password" value="password" />
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.example.model" />
+        <!-- JPA vendor-specific properties -->
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+</beans>
+
+Spring Boot
+Dependencies:
+
+Use Spring Boot starters to automatically include all necessary dependencies. You only need a few lines in your pom.xml or build.gradle.
+Example pom.xml:
+
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+</dependencies>
+
+Servlet Configuration:
+
+Spring Boot auto-configures the DispatcherServlet, so you don’t need a web.xml. The servlet is automatically mapped to the root URL pattern (/).
+
+Spring Configuration:
+
+Most of the configuration is handled by Spring Boot’s auto-configuration feature. You can override defaults in application.properties.
+Example application.properties:
+
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=user
+spring.datasource.password=password
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+2. Controller and REST API Setup
+Traditional Spring
+Controller Class:
+
+Define a controller using @Controller and configure request mappings with @RequestMapping.
+Example:
+
+@Controller
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String getAllUsers(Model model) {
+        model.addAttribute("users", userService.findAllUsers());
+        return "userList";
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    public String addUser(@ModelAttribute User user) {
+        userService.saveUser(user);
+        return "redirect:/users";
+    }
+}
+
+Service and Repository:
+
+Manually create and wire service and repository classes.
+Example Service:
+
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+}
+
+Example Repository:
+
+public interface UserRepository extends JpaRepository<User, Long> {
+}
+
+
+Spring Boot
+Controller Class:
+
+Use @RestController to simplify controller configuration and automatically return JSON responses.
+Example:
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.findAllUsers();
+    }
+
+    @PostMapping
+    public User addUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
+}
+
+Service and Repository:
+
+Service and repository setup is the same as in traditional Spring, but with less boilerplate code due to auto-configuration and dependency injection.
+Example Service and Repository (same as traditional):
+
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+}
+
+
+Hard 2 question
+Benchmark performance differences between Spring and Spring Boot
+
+Ans:-
+Benchmarking performance differences between Spring and Spring Boot involves several factors, including startup time, memory usage, response time, and throughput. Both frameworks use the same core technologies, so the performance differences are typically due to the additional features and conveniences provided by Spring Boot. Here's how you can approach the benchmarking process:
+
+1. Benchmarking Methodology
+1.1. Setup
+Hardware: Use the same hardware or cloud instances for testing both frameworks to ensure a fair comparison.
+Environment: Ensure that the environment (e.g., JVM version, OS, database) is identical for both setups.
+Application: Develop identical applications using Spring and Spring Boot that perform similar tasks (e.g., a REST API with basic CRUD operations connected to a database).
+1.2. Metrics
+Startup Time: Measure the time taken by the application to start up and become ready to serve requests.
+Memory Usage: Track the memory footprint of the application during startup and under load.
+Response Time: Measure the time taken to handle individual HTTP requests.
+Throughput: Determine how many requests the application can handle per second under load.
+CPU Usage: Monitor CPU utilization under various loads to compare efficiency.
+1.3. Tools
+JMH (Java Microbenchmark Harness): Useful for microbenchmarking specific parts of the application.
+Apache JMeter / Gatling: Useful for load testing and measuring response time, throughput, and latency.
+VisualVM / JConsole: For monitoring memory usage and CPU utilization.
+Spring Boot Actuator: Provides useful metrics out-of-the-box for Spring Boot applications.
+2. Running the Benchmarks
+2.1. Startup Time
+Spring: Measure the time from when the application is started until it is ready to accept requests.
+Command: time mvn spring-boot:run or time java -jar app.war for traditional Spring.
+Spring Boot: Similarly, measure the startup time.
+Command: time mvn spring-boot:run or time java -jar app.jar.
+2.2. Memory Usage
+Spring: Monitor the memory usage right after startup and under load.
+Tool: Use VisualVM or jstat.
+Spring Boot: Do the same for the Spring Boot application.
+Tool: Use VisualVM or jstat.
+2.3. Response Time and Throughput
+Spring: Deploy the application and use a tool like Apache JMeter to simulate load. Measure the average response time and throughput under various load conditions.
+Tool: Apache JMeter or Gatling with scenarios that simulate user behavior.
+Spring Boot: Deploy the Spring Boot application and run the same tests.
+Tool: Apache JMeter or Gatling.
+2.4. CPU Usage
+Spring: Monitor CPU usage during the load test.
+Tool: VisualVM, top, or htop.
+Spring Boot: Monitor CPU usage similarly during the load test.
+Tool: VisualVM, top, or htop.
+3. Expected Findings
+3.1. Startup Time
+Spring: Traditional Spring applications typically take longer to start because they involve manual configurations and might require external servlet containers.
+Spring Boot: Spring Boot applications often start faster due to embedded servers and auto-configuration, though the difference might be small if the Spring application is highly optimized.
+3.2. Memory Usage
+Spring: Memory usage might be slightly lower in traditional Spring due to fewer components being loaded by default.
+Spring Boot: Spring Boot applications might have a slightly higher memory footprint due to auto-configuration and additional features like Actuator. However, this is usually negligible.
+3.3. Response Time and Throughput
+Spring: In terms of raw performance, both frameworks should be quite similar since they both use the same core Spring components.
+Spring Boot: The additional auto-configuration and features may introduce a very small overhead, but it is typically not significant enough to impact response time or throughput in most applications.
+3.4. CPU Usage
+Spring: CPU usage should be consistent across both frameworks, but traditional Spring might use less CPU at startup if fewer components are initialized.
+Spring Boot: Might show a slightly higher CPU usage at startup due to auto-configuration but should be comparable to Spring during normal operation.
+
+

@@ -1,0 +1,369 @@
+Easy 1 question
+ Describe the Spring Framework and its main features?
+
+Ans:- Spring framework is used to develop enterprise web application in java. '
+         Spring offers wide range of functionality to simplify application.
+         Spring is used to create loosely coupled application using dependency injection and Aspect-Oriented programming.
+
+         Main features are:-
+         Dependency injection:-spring allows to create loosely coupled application where spring inject dependency into object at runtime than the object create its own depemdecy
+         Spring MVC:-Spring framework works on MVC that is model view controller. Spring MVC is web framework for building web application, it provides clear sepration between model view and controller, making it easier to manage application
+         Data Access:-  Spring provides ORM tool to interact with database, it reduces boiler plate code.
+         Spring Security:- Spring also provides security for authentication like OAuth, SAML Integration.
+         Spring-boot:- Spring also provides extention that is spring boot for rapid application development
+         
+
+Easy 2 question
+Create a Java class with @Component and use @Autowired (Complexity: Easy).
+
+Ans:- Controller
+          package com.training;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.training.service.Test;
+
+@RestController 
+public class MainController {
+	
+	@Autowired
+	public Test t;
+	
+	@GetMapping("/test")
+	public ResponseEntity<String> getTest() {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(t.test());
+	}
+
+}
+
+Component
+
+package com.training.service;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Test {
+	
+	public String test() {
+		System.out.println("this is test class annoted with component");
+		return "hello i am test class annoted with component annotation";
+	}
+
+}
+
+Medium 1 question
+Demonstrate @Configuration and @Bean annotations
+
+Ans:- The @Configuration and @Bean annotations are used in Spring to define and configure beans in a Spring application context. These annotations enable Java-based configuration, which is an alternative to XML-based configuration.
+
+1. @Configuration Annotation:
+The @Configuration annotation is used to indicate that a class contains one or more @Bean methods. These methods are responsible for defining beans that will be managed by the Spring IoC container.
+A class annotated with @Configuration is a source of bean definitions, and Spring will treat it similarly to an XML configuration file.
+
+2. @Bean Annotation:
+The @Bean annotation is applied to a method to declare a bean definition. The method’s return type defines the type of the bean, and the method name is used as the bean ID by default.
+The Spring container will call the @Bean methods to instantiate, configure, and initialize the beans when needed.
+
+code:-
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public MyService myService() {
+        return new MyServiceImpl();
+    }
+}
+
+
+AdvantalTrainingApplication.java
+
+package com.training;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AdvantalTrainingApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AdvantalTrainingApplication.class, args);
+	                  ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+	                  MyService myService = context.getBean(MyService.class);
+	}
+
+}
+
+Meduim 2 question
+Implement @Service and @Repository annotations
+
+Ans:-
+MainController.java
+
+package com.training;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.training.service.Test;
+
+@RestController 
+public class MainController {
+	
+	@Autowired
+	public Test t;
+
+	@GetMapping("/fetch-data")
+	public ResponseEntity<String> getData() {
+		if(t.getOrders()==null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}else {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(t.getOrders());
+		}
+	}
+
+}
+
+Orders.java
+
+package com.training.entities;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class Orders {
+	@Id
+	private int id;
+	private String name;
+	private String price;
+	public Orders(int id, String name, String price) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+	}
+	public Orders() {
+		super();
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	@Override
+	public String toString() {
+		return "Orders [id=" + id + ", name=" + name + ", price=" + price + "]";
+	}
+	
+
+}
+
+Test.java
+
+package com.training.service;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.training.entities.Orders;
+import com.training.repository.OrderRespository;
+
+@Service
+public class Test {
+	public Orders o=null;
+	
+	@Autowired
+	private OrderRespository orderRespository;
+	public String getOrders() {
+		o=orderRespository.getByPrice("150000");
+		return o.toString();
+	}
+
+}
+
+OrderRespository.java
+
+package com.training.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.training.entities.Orders;
+
+public interface OrderRespository extends JpaRepository<Orders,Integer> {
+	 
+	@Query("select u from Orders u where u.price = :price")
+	  Orders getByPrice(@Param("price") String price);
+
+}
+
+Medium 3 question
+Use @ComponentScan for component detection
+
+Ans:-
+
+MainController.java
+
+package com.testscan;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@ComponentScan("com.testscan")
+@RestController
+public class MainContoller {
+	@Autowired
+	public t1 t;
+	
+	@GetMapping("/test")
+    public ResponseEntity<String> getData(){
+    	return ResponseEntity.status(HttpStatus.ACCEPTED).body(t.getData());
+    }
+}
+
+t1.java
+
+package com.testscan;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class t1 {
+  public String getData() {
+	  return "This is test class which is in another package that is scanned using componentscan annotation";
+  }
+}
+
+Hard 2 question
+Use @Qualifier to resolve bean ambiguity
+
+Ans:-
+
+MainController.java
+
+package com.training;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.training.service.Test;
+
+@RestController 
+public class MainController {
+	
+	@Autowired
+	public Test t;
+	
+	@GetMapping("/test")
+	public ResponseEntity<String> payment(){
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(t.makePayment());
+	}
+
+}
+
+PaymentProcessor.java
+
+package com.training.service;
+
+public interface PaymentProcessor {
+    public String processpayment(int a);
+}
+
+CreditCardPayment.java
+
+package com.training.service;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class CreditCardPayment implements PaymentProcessor {
+
+	@Override
+	public String processpayment(int a) {
+		// TODO Auto-generated method stub
+		return "added sum in credit card "+a;
+	}
+  
+}
+
+PayPalPayment.java
+
+package com.training.service;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class PayPalPayment implements PaymentProcessor {
+	@Override
+	public String processpayment(int a) {
+		// TODO Auto-generated method stub
+		return "added sum in PayPal "+a;
+	}
+}
+
+Test.java
+
+package com.training.service;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+@Service
+public class Test {
+	
+	PaymentProcessor paymentProcessor;
+	@Autowired
+	public Test(@Qualifier("payPalPayment") PaymentProcessor paymentProcessor ) {
+		this.paymentProcessor=paymentProcessor;
+	}
+	
+	public String makePayment() {
+		return paymentProcessor.processpayment(200000);
+	}
+
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,129 @@
+Easy 1 question
+List and explain key differences between Spring and Spring Boot
+
+Spring and Spring Boot are both frameworks from the Spring ecosystem, but they serve different purposes and are designed with different goals in mind. Here are the key differences between the two:
+
+1. Framework vs. Microframework
+Spring: Spring is a comprehensive, full-featured framework for building enterprise-grade Java applications. It provides a wide range of capabilities and is highly configurable, allowing developers to choose and integrate various components as needed.
+Spring Boot: Spring Boot is a microframework built on top of Spring. It simplifies the process of building production-ready applications by offering convention over configuration, reducing the need for boilerplate code and complex configuration.
+2. Configuration
+Spring: Requires extensive configuration, often using XML or Java-based configuration files. Developers have to manually configure many aspects of the application, such as data sources, beans, and dependencies.
+Spring Boot: Minimizes the need for configuration by providing sensible defaults and auto-configuration. It automatically configures the application based on the dependencies present in the project, drastically reducing setup time.
+3. Setup Time
+Spring: Setting up a Spring application can be time-consuming due to the manual configuration required for various components and dependencies.
+Spring Boot: Spring Boot provides a quick setup through its "starter" dependencies and embedded server options, enabling developers to get applications up and running with minimal effort.
+4. Embedded Server
+Spring: Typically, Spring applications require an external server, like Tomcat or Jetty, to be deployed and run.
+Spring Boot: Spring Boot comes with embedded servers (Tomcat, Jetty, or Undertow) out of the box, allowing applications to be packaged as standalone JARs that can be run independently.
+5. Dependency Management
+Spring: Developers often need to manually manage dependencies, which can lead to compatibility issues and version conflicts.
+Spring Boot: Spring Boot's starter dependencies simplify dependency management by providing a curated set of compatible dependencies, ensuring that the versions work well together.
+
+Easy 2 question
+Create a Spring Boot application using Spring Initializr
+
+Ans:-
+After successfully created project using spring initalizr. Main Java file from where execution starts that is:-
+
+package com.training;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+
+public class AdvantalTrainingApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AdvantalTrainingApplication.class, args);
+		
+	}
+
+}
+
+Medium 1 question
+Create a RESTful web service using @RestController
+
+Ans:-
+package com.training;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.training.service.Test;
+
+@RestController 
+public class MainController {
+	
+	@Autowired
+	public Test t;
+	
+	@GetMapping("/test")
+	public ResponseEntity<String> payment(){
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body("successfully send data");
+	}
+	@PostMapping("/post")
+	public void sendData(@RequestBody() String a) {
+		System.out.println(a);
+	}
+
+}
+
+Medium 2 question
+Use application.properties for custom configuration
+
+Ans:-
+spring.application.name=Advantal_training
+spring.datasource.url=jdbc:mysql://localhost:3306/test
+spring.datasource.username=root
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.hibernate.ddl-auto=update
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=-1
+spring.servlet.multipart.file-size-threshold=-1
+spring.mvc.view.prefix=/Normal/
+spring.mvc.view.suffix=.html
+
+Medium 3 question
+Demonstrate @SpringBootApplication annotation
+
+Ans:-
+@SpringBootApplication:- This annotation combines three annotation such as @Configuration, @EnableAutoConfiguration and  @ComponentScan
+it auto configures spring dependencies and create beans for objects.
+
+@Controller:- it indicates that java class is controller class which is used for navigation, sending request from one page to another, it contols web application using mapping annotations
+
+@RestController:- it behaves same as Controller annotation but it is used for creating Restfull web api , it combines controller annotation and responsebody annotation
+
+@RequestMapping:- it is used over methods which is used for mapping
+
+@GetMapping and @PostMapping:-it works same as request mapping annotation but it is used with RestController annotation
+
+And multiple annotations are used in spring boot such as requestbody, responsebody, beans, param, pathvariable, query, qualifiers, entity, id, autowired, repository, service, component etc
+
+Hard 1 question
+Integrate with an embedded database using Spring Data JPA
+
+Ans:-
+Application.properties
+
+spring.application.name=Advantal_training
+spring.datasource.url=jdbc:mysql://localhost:3306/test
+spring.datasource.username=root
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.hibernate.ddl-auto=update
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=-1
+spring.servlet.multipart.file-size-threshold=-1
+spring.mvc.view.prefix=/Normal/
+spring.mvc.view.suffix=.html 
+
+  
+

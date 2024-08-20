@@ -1,0 +1,505 @@
+Easy 1 question
+List key components of Spring Boot
+
+Ans:-
+1. Spring Boot Starter
+Starters: Pre-defined templates that include dependencies and configurations for specific functionalities like web development, JPA, testing, etc.
+Examples: spring-boot-starter-web, spring-boot-starter-data-jpa, spring-boot-starter-test.
+2. Spring Boot Auto-Configuration
+Automatically configures your Spring application based on the dependencies you have added to the project.
+Reduces the need for manual configuration in XML or Java classes.
+3. Spring Boot CLI
+A command-line interface for creating, running, and testing Spring Boot applications.
+Allows for quick prototyping by using Groovy scripts.
+4. Spring Boot Actuator
+Provides production-ready features to help monitor and manage your application.
+Includes endpoints for health checks, metrics, environment properties, etc.
+5. Spring Boot DevTools
+Enhances the development experience by providing features like automatic restarts, live reload, and configurations for development environments.
+Helps in rapid application development by reducing the turnaround time for changes.
+
+Easy 2 question 
+Create a Spring Boot application with a REST API
+
+Ans:-
+  package com.training;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.training.service.Test;
+
+@RestController 
+public class MainController {
+	
+	@Autowired
+	public Test t;
+	
+	@GetMapping("/test")
+	public ResponseEntity<String> getTest() {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(t.test());
+	}
+
+}
+
+Component
+
+package com.training.service;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Test {
+	
+	public String test() {
+		System.out.println("this is test class annoted with component");
+		return "hello i am test class annoted with component annotation";
+	}
+
+}
+
+Medium 1 question
+Use Spring Boot Starter with an embedded database
+
+Ans:-
+
+pom.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.2</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.spring</groupId>
+	<artifactId>Advantal_training</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Advantal_training</name>
+	<description>Demo project for Spring Boot</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+
+
+package com.training;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.training.service.Test;
+
+@RestController 
+public class MainController {
+	
+	@Autowired
+	public Test t;
+
+	@GetMapping("/fetch-data")
+	public ResponseEntity<String> getData() {
+		if(t.getOrders()==null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}else {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(t.getOrders());
+		}
+	}
+
+}
+
+Orders.java
+
+package com.training.entities;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class Orders {
+	@Id
+	private int id;
+	private String name;
+	private String price;
+	public Orders(int id, String name, String price) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+	}
+	public Orders() {
+		super();
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	@Override
+	public String toString() {
+		return "Orders [id=" + id + ", name=" + name + ", price=" + price + "]";
+	}
+	
+
+}
+
+Test.java
+
+package com.training.service;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.training.entities.Orders;
+import com.training.repository.OrderRespository;
+
+@Service
+public class Test {
+	public Orders o=null;
+	
+	@Autowired
+	private OrderRespository orderRespository;
+	public String getOrders() {
+		o=orderRespository.getByPrice("150000");
+		return o.toString();
+	}
+
+}
+
+OrderRespository.java
+
+package com.training.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.training.entities.Orders;
+
+public interface OrderRespository extends JpaRepository<Orders,Integer> {
+	 
+	@Query("select u from Orders u where u.price = :price")
+	  Orders getByPrice(@Param("price") String price);
+
+}
+
+Medium 2 question
+Use Spring Boot Actuator for monitoring
+
+Ans:-
+Adding actuator dependency in pom.xml
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+
+Configure application.properties
+
+management.endpoints.web.exposure.include=health,info,metrics,env
+management.endpoint.health.show-details=always
+management.endpoint.health.probes.enabled=true
+management.endpoints.web.exposure.include=*
+management.endpoints.web.base-path=/management
+
+Created one java class for spring security
+
+@Configuration
+public class SecurityConfig {
+
+    @bean
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests((authz)->authz...requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
+            .and()
+            .httpBasic());
+            
+    }
+}
+
+Application.properties
+
+management.metrics.export.prometheus.enabled=true
+
+Created custom class
+
+@Component
+public class MyCustomHealthIndicator implements HealthIndicator {
+
+    @Override
+    public Health health() {
+        // Custom health check logic
+        return Health.up().withDetail("customHealth", "All systems go!").build();
+    }
+}
+
+Medium 3 question
+Customize the default Spring Boot banner
+
+Ans:-
+banner.txt
+ ______            _       _      ____              _   
+|  ____|          | |     | |    |  _ \            | |  
+| |__   __ _ _ __ | |_ ___| |__  | |_) | __ _ _ __ | |_ 
+|  __| / _` | '_ \| __/ __| '_ \ |  _ < / _` | '_ \| __|
+| |___| (_| | | | | || (__| | | || |_) | (_| | | | | |_ 
+|______\__,_|_| |_|\__\___|_| |_||____/ \__,_|_| |_|\__|
+                                                       
+
+with variables
+
+ ______  _      _    ____            _   
+|  ____|(_)    | |  |  _ \          | |  
+| |__    _  ___| | _| |_) | ___   __| |_ 
+|  __|  | |/ __| |/ /  _ < / _ \ / _` | |
+| |     | | (__|   <| |_) | (_) | (_| | |
+|_|     |_|\___|_|\_\____/ \___/ \__,_|_|
+                                        
+Application Version: ${application.version}
+Spring Boot Version: ${spring-boot.version}
+
+import org.springframework.boot.Banner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.env.Environment;
+
+import java.io.PrintStream;
+
+@SpringBootApplication
+public class MyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(MyApplication.class);
+        app.setBanner(new Banner() {
+            @Override
+            public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
+                out.println("Custom Banner Text");
+                out.println("Application Version: " + environment.getProperty("application.version"));
+            }
+        });
+        app.run(args);
+    }
+}
+
+application.properties
+
+spring.main.banner-mode=off
+
+
+Hard 1question
+Implement custom health checks and metrics with Actuator
+
+Ans:-
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.stereotype.Component;
+
+@Component
+public class DatabaseHealthIndicator implements HealthIndicator {
+
+    @Override
+    public Health health() {
+        // Custom logic to check database health
+        boolean databaseIsUp = checkDatabaseConnection();
+
+        if (databaseIsUp) {
+            return Health.up().withDetail("Database Status", "Database is up and running").build();
+        } else {
+            return Health.down().withDetail("Database Status", "Database is down").build();
+        }
+    }
+
+    private boolean checkDatabaseConnection() {
+        // Your database connection logic here
+        return true; // Return true if the connection is successful, false otherwise
+    }
+}
+
+Adding dependency in pom.xml
+
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-core</artifactId>
+</dependency>
+
+CustomMetrics.java
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CustomMetrics {
+
+    private final Counter requestCounter;
+
+    public CustomMetrics(MeterRegistry meterRegistry) {
+        this.requestCounter = meterRegistry.counter("custom.request.counter");
+    }
+
+    public void incrementCounter() {
+        this.requestCounter.increment();
+    }
+}
+
+MyController.java
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+    private final CustomMetrics customMetrics;
+
+    public MyController(CustomMetrics customMetrics) {
+        this.customMetrics = customMetrics;
+    }
+
+    @GetMapping("/custom-endpoint")
+    public String customEndpoint() {
+        customMetrics.incrementCounter();
+        return "Custom endpoint hit!";
+    }
+}
+
+Hard 2 question
+Use profile-specific configurations in a Spring Boot application
+
+Ans:-
+
+For production
+
+application.properties
+spring.application.name=MyApp
+server.port=8080
+spring.datasource.url=jdbc:mysql://localhost:3306/proddb
+spring.datasource.username=root
+spring.datasource.password=prodpassword
+spring.jpa.hibernate.ddl-auto=none
+
+Created class for profile
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
+@Configuration
+public class DataSourceConfig {
+
+    @Bean
+    @Profile("prod")
+    public DataSource prodDataSource() {
+        return new HikariDataSource();
+    }
+}
+
+Spring Boot also supports profile-specific configurations for testing. You can create different test configurations based on profiles using the @ActiveProfiles annotation.
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+@SpringBootTest
+@ActiveProfiles("test")
+public class MyAppTests {
+
+    @Test
+    public void contextLoads() {
+        // Test logic here
+    }
+}
+
+
+
+
+
